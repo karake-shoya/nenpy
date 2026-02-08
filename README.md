@@ -45,7 +45,17 @@ npm run dev
 npm run lint
 npm run build
 npm run format
+npm run init
 ```
+
+## 初期化コマンド
+
+`npm run init` で以下を対話形式で実行できます。
+
+- `.env.example` から `.env.local` を生成（未作成時）
+- アプリ名の一括更新（`NEXT_PUBLIC_APP_NAME` / `package.json` / `README` タイトル / `layout.tsx` のfallback）
+- Supabase URL / anon key を `.env.local` に書き込み
+- 実行前に `git status` がクリーンなら自動コミット（`chore: initial setup`）
 
 ## 起動確認手順
 
