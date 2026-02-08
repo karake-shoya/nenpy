@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# next-supabase-shadcn-template
 
-## Getting Started
+Next.js (App Router) + TypeScript + Tailwind CSS + shadcn/ui + Supabase を最初から組み込んだテンプレートです。
 
-First, run the development server:
+## 技術スタック
+
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Supabase JavaScript Client (`@supabase/supabase-js`)
+- ESLint + Prettier
+
+## セットアップ
+
+1. Node.js バージョンを合わせる
+
+```bash
+nvm use
+```
+
+2. 依存関係をインストール
+
+```bash
+npm install
+```
+
+3. 環境変数ファイルを作成
+
+```bash
+cp .env.example .env.local
+```
+
+4. `.env.local` に Supabase の情報を設定
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+Supabase ダッシュボードの `Project Settings` -> `Data API` から URL と anon key を取得できます。
+
+## 開発コマンド
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run build
+npm run format
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 起動確認手順
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. 開発サーバーを起動
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev
+```
 
-## Learn More
+2. ブラウザで以下を確認
 
-To learn more about Next.js, take a look at the following resources:
+- `http://localhost:3000/`
+- `http://localhost:3000/api/health` -> `{"status":"ok"}`
+- `http://localhost:3000/api/supabase/ping` -> `{"ok":true|false,"hasSession":boolean}`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. `/` ページのボタンで API を実行し、結果表示を確認
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `Health API を叩く`
+- `Supabase Ping を叩く`
 
-## Deploy on Vercel
+## shadcn/ui コンポーネント追加
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npx shadcn@latest add button
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+必要に応じて別コンポーネントも同様に `add` で追加できます。
