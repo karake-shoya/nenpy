@@ -62,29 +62,39 @@ export default function QuestionCard({ question, questionNumber, total, onNext, 
       {/* 年表ヒントパネル（生まれ年入力後の年あり質問のみ） */}
       {showMilestones && (
         <div
-          className="rounded-xl px-4 py-3 mb-4"
+          className="rounded-xl px-3 py-3 mb-4"
           style={{ backgroundColor: "#FFF5EF", border: "1px solid #F0E0D4" }}
         >
-          <p className="text-xs font-semibold mb-2" style={{ color: "#C4A090" }}>
-            📅 年の目安
+          <p className="text-xs font-semibold mb-2.5 px-1" style={{ color: "#C4A090" }}>
+            📅 年の目安 — タップで西暦をセット
           </p>
-          <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+          <div className="grid grid-cols-3 gap-2">
             {milestones.map((m) => (
               <button
                 key={m.label}
                 type="button"
                 onClick={() => setYear(String(m.year))}
-                className="flex items-center gap-1 text-xs transition-opacity hover:opacity-70"
-                title={`${m.year}年をセット`}
+                className="flex flex-col items-center justify-center rounded-xl py-2.5 px-1 transition-all active:scale-95"
+                style={{
+                  backgroundColor: year === String(m.year) ? "#FF6B6B" : "#ffffff",
+                  border: `1.5px solid ${year === String(m.year) ? "#FF6B6B" : "#F0D6C8"}`,
+                }}
               >
-                <span style={{ color: "#8B6B5E" }}>{m.label}</span>
-                <span className="font-bold" style={{ color: "#FF6B6B" }}>{m.year}年</span>
+                <span
+                  className="text-xs leading-tight mb-0.5"
+                  style={{ color: year === String(m.year) ? "rgba(255,255,255,0.85)" : "#8B6B5E" }}
+                >
+                  {m.label}
+                </span>
+                <span
+                  className="text-sm font-black leading-tight"
+                  style={{ color: year === String(m.year) ? "#ffffff" : "#FF6B6B" }}
+                >
+                  {m.year}
+                </span>
               </button>
             ))}
           </div>
-          <p className="text-xs mt-2" style={{ color: "#C4A090" }}>
-            タップすると西暦欄にセットされます
-          </p>
         </div>
       )}
 
