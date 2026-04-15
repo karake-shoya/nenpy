@@ -81,18 +81,16 @@ export default function Home() {
         </div>
 
         {/* CTAボタン */}
-        <Link href="/create">
-          <button
-            className="w-full py-4 rounded-xl font-black text-white text-base transition-all"
+        <Link href="/create" className="block w-full">
+          <span
+            className="block w-full py-4 rounded-xl font-black text-white text-base text-center btn-bounce"
             style={{
               background: "linear-gradient(135deg, #FF6B6B 0%, #FFB347 100%)",
               boxShadow: "0 4px 20px rgba(255, 107, 107, 0.35)",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-1px)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
           >
             はじめる
-          </button>
+          </span>
         </Link>
 
         <p className="text-center text-xs mt-3" style={{ color: "#C4A090" }}>
