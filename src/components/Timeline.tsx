@@ -9,34 +9,33 @@ interface TimelineProps {
   answers: Answer[];
 }
 
-// 回答データを年表アイテムに変換する
 function buildTimelineItems(answers: Answer[]): TimelineItemType[] {
   const currentYear = new Date().getFullYear();
   const items: TimelineItemType[] = [];
 
   for (const answer of answers) {
-    if (!answer.text.trim()) continue;
+    if (!answer.title.trim()) continue;
 
     const question = QUESTIONS.find((q) => q.id === answer.questionId);
     if (!question) continue;
 
-    // 未来の章・現在の章は特別扱い
     const isFuture = answer.questionId === "next_chapter";
     const isCurrent = answer.questionId === "current_chapter";
-
-    // auto_year は現在年-10を自動設定
-    const year = answer.questionId === "auto_year" ? currentYear - 10 : (answer.year ?? null);
+    const year =
+      answer.questionId === "surprise_now" ? currentYear - 10
+      : isCurrent ? currentYear
+      : (answer.year ?? null);
 
     items.push({
-      year: isFuture ? null : isCurrent ? currentYear : year,
+      year: isFuture ? null : year,
       label: question.timelineLabel,
       emoji: question.emoji,
+      title: answer.title,
       text: answer.text,
       isFuture,
     });
   }
 
-  // 年順にソート（年なし・未来は末尾）
   return items.sort((a, b) => {
     if (a.isFuture) return 1;
     if (b.isFuture) return -1;
@@ -47,7 +46,6 @@ function buildTimelineItems(answers: Answer[]): TimelineItemType[] {
   });
 }
 
-// 年表全体の表示
 export default function Timeline({ name, answers }: TimelineProps) {
   const items = buildTimelineItems(answers);
 
@@ -55,19 +53,17 @@ export default function Timeline({ name, answers }: TimelineProps) {
     <div className="w-full max-w-lg mx-auto px-4">
       {/* ヘッダー */}
       <div className="text-center mb-10">
-        <div
-          className="inline-block px-6 py-2 rounded-full text-white text-sm font-bold mb-4 shadow-md"
-          style={{ background: "linear-gradient(135deg, #FF6B6B, #FFB347)" }}
-        >
-          🌸 {name}の年表
-        </div>
-        <h1 className="text-2xl font-bold" style={{ color: "#3D2B1F" }}>
-          私だけのストーリー
+        <p className="text-xs font-semibold tracking-widest mb-2 uppercase" style={{ color: "#FFB347" }}>
+          Timeline
+        </p>
+        <h1 className="text-2xl font-black" style={{ color: "#2D1F1A" }}>
+          {name}の年表
         </h1>
+        <div className="mt-3 mx-auto w-12 h-1 rounded-full" style={{ background: "linear-gradient(90deg, #FF6B6B, #FFB347)" }} />
       </div>
 
       {/* タイムライン本体 */}
-      <div className="space-y-0">
+      <div>
         {items.map((item, i) => (
           <TimelineItem key={`${item.label}-${i}`} item={item} index={i} isLast={i === items.length - 1} />
         ))}

@@ -1,27 +1,22 @@
 // 質問の型定義
-export type QuestionType = "text" | "text_with_year" | "chapters" | "auto_year";
+export type QuestionType = "text" | "text_with_year" | "auto_year";
 
 export interface Question {
   id: string;
   text: string;
-  placeholder?: string;
+  titlePlaceholder: string;   // タイトル欄のplaceholder
+  textPlaceholder?: string;   // 詳細欄のplaceholder（省略可能）
   type: QuestionType;
   emoji: string;
   timelineLabel: string;
-  // text_with_year の場合に年のplaceholder
   yearPlaceholder?: string;
 }
 
-// 回答の型定義
+// 回答の型定義（タイトル＋詳細の2フィールド）
 export interface Answer {
   questionId: string;
-  text: string;
-  year?: number | null;
-}
-
-// 章の型定義（question: chapters用）
-export interface Chapter {
-  title: string;
+  title: string;   // タイムラインに大きく表示される見出し
+  text: string;    // 詳細テキスト（省略可）
   year?: number | null;
 }
 
@@ -30,6 +25,7 @@ export interface TimelineItem {
   year: number | null;
   label: string;
   emoji: string;
+  title: string;
   text: string;
   isFuture?: boolean;
 }
