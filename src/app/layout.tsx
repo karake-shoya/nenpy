@@ -1,23 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-
+import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-noto",
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const appName = process.env.NEXT_PUBLIC_APP_NAME ?? "next-supabase-shadcn-template";
 
 export const metadata: Metadata = {
-  title: appName,
-  description: "Next.js + Supabase + shadcn/ui starter template",
+  title: "nenpy - あなただけの年表をつくろう",
+  description: "15の質問に答えるだけで、あなただけのオリジナル年表が完成。友だちにシェアしよう！",
+  openGraph: {
+    title: "nenpy - あなただけの年表をつくろう",
+    description: "15の質問に答えるだけで、あなただけのオリジナル年表が完成。友だちにシェアしよう！",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -27,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      <body className={`${notoSansJP.variable} antialiased min-h-screen gradient-bg`}>{children}</body>
     </html>
   );
 }
