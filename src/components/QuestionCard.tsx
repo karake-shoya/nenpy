@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import type { Question } from "@/lib/types";
+import { calcMilestones } from "@/lib/utils";
 
 interface QuestionCardProps {
   question: Question;
@@ -11,15 +12,20 @@ interface QuestionCardProps {
   onNext: (title: string, text: string, year?: number | null) => void;
   onBack: (() => void) | null;
   isLast: boolean;
+  birthYear: number | null;
 }
 
-export default function QuestionCard({ question, questionNumber, total, onNext, onBack, isLast }: QuestionCardProps) {
+export default function QuestionCard({ question, questionNumber, total, onNext, onBack, isLast, birthYear }: QuestionCardProps) {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [year, setYear] = useState("");
 
   const currentYear = new Date().getFullYear();
   const isDisabled = !title.trim();
+
+  // 年入力がある質問でのみマイルストーンを表示
+  const showMilestones = birthYear !== null && question.type === "text_with_year";
+  const milestones = showMilestones ? calcMilestones(birthYear) : [];
 
   const handleSubmit = () => {
     if (isDisabled) return;
@@ -52,6 +58,35 @@ export default function QuestionCard({ question, questionNumber, total, onNext, 
       <h2 className="text-center text-lg font-bold mb-6 leading-relaxed" style={{ color: "#2D1F1A" }}>
         {question.text}
       </h2>
+
+      {/* 年表ヒントパネル（生まれ年入力後の年あり質問のみ） */}
+      {showMilestones && (
+        <div
+          className="rounded-xl px-4 py-3 mb-4"
+          style={{ backgroundColor: "#FFF5EF", border: "1px solid #F0E0D4" }}
+        >
+          <p className="text-xs font-semibold mb-2" style={{ color: "#C4A090" }}>
+            📅 年の目安
+          </p>
+          <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+            {milestones.map((m) => (
+              <button
+                key={m.label}
+                type="button"
+                onClick={() => setYear(String(m.year))}
+                className="flex items-center gap-1 text-xs transition-opacity hover:opacity-70"
+                title={`${m.year}年をセット`}
+              >
+                <span style={{ color: "#8B6B5E" }}>{m.label}</span>
+                <span className="font-bold" style={{ color: "#FF6B6B" }}>{m.year}年</span>
+              </button>
+            ))}
+          </div>
+          <p className="text-xs mt-2" style={{ color: "#C4A090" }}>
+            タップすると西暦欄にセットされます
+          </p>
+        </div>
+      )}
 
       {/* 入力エリア */}
       <div className="space-y-3 mb-6">
@@ -123,7 +158,7 @@ export default function QuestionCard({ question, questionNumber, total, onNext, 
               onFocus={(e) => (e.currentTarget.style.borderColor = "#FF8FAB")}
               onBlur={(e) => (e.currentTarget.style.borderColor = "#F0D6C8")}
               min={1900}
-              max={currentYear}
+              max={currentYear + 10}
             />
           </div>
         )}
@@ -131,7 +166,6 @@ export default function QuestionCard({ question, questionNumber, total, onNext, 
 
       {/* ボタン行 */}
       <div className="flex items-center gap-3">
-        {/* 戻るボタン */}
         {onBack && (
           <button
             onClick={onBack}
@@ -148,7 +182,6 @@ export default function QuestionCard({ question, questionNumber, total, onNext, 
           </button>
         )}
 
-        {/* 次へボタン */}
         <button
           onClick={handleSubmit}
           disabled={isDisabled}
@@ -170,7 +203,6 @@ export default function QuestionCard({ question, questionNumber, total, onNext, 
         </button>
       </div>
 
-      {/* ステップ表示 */}
       <p className="text-center text-xs mt-4 opacity-50" style={{ color: "#2D1F1A" }}>
         {questionNumber} / {total}
       </p>

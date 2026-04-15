@@ -17,6 +17,9 @@ export default function QuestionFlow() {
 
   const currentQuestion = QUESTIONS[currentIndex];
 
+  // 最初の質問（name_birth）の回答から生まれ年を取得
+  const birthYear = answers.find((a) => a.questionId === "name_birth")?.year ?? null;
+
   const handleNext = async (title: string, text: string, year?: number | null) => {
     const newAnswer: Answer = {
       questionId: currentQuestion.id,
@@ -97,6 +100,7 @@ export default function QuestionFlow() {
               onNext={handleNext}
               onBack={currentIndex > 0 ? handleBack : null}
               isLast={currentIndex === QUESTIONS.length - 1}
+              birthYear={birthYear}
             />
           </AnimatePresence>
         </div>
