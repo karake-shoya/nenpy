@@ -19,15 +19,13 @@ function buildTimelineItems(answers: Answer[]): TimelineItemType[] {
     const question = QUESTIONS.find((q) => q.id === answer.questionId);
     if (!question) continue;
 
-    const isFuture = answer.questionId === "next_chapter";
-    const isCurrent = answer.questionId === "current_chapter";
+    const isFuture = question.isFuture ?? false;
     const year =
       answer.questionId === "surprise_now" ? currentYear - 10
-      : isCurrent ? currentYear
       : (answer.year ?? null);
 
     items.push({
-      year: isFuture ? null : year,
+      year: isFuture ? null : (year ?? null),
       label: question.timelineLabel,
       emoji: question.emoji,
       title: answer.title,

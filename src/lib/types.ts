@@ -4,12 +4,13 @@ export type QuestionType = "text" | "text_with_year" | "auto_year";
 export interface Question {
   id: string;
   text: string;
-  titlePlaceholder: string;   // タイトル欄のplaceholder
-  textPlaceholder?: string;   // 詳細欄のplaceholder（省略可能）
+  titlePlaceholder: string;
+  textPlaceholder?: string;
   type: QuestionType;
   emoji: string;
   timelineLabel: string;
   yearPlaceholder?: string;
+  isFuture?: boolean;   // 年表の未来セクションに配置するか
 }
 
 // 回答の型定義（タイトル＋詳細の2フィールド）
